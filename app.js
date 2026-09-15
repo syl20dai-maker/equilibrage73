@@ -174,10 +174,17 @@ function bestSolution(intervals, correctionAngle, imbalanceMass, count) {
 
   if (!bestPlacements) return null;
 
+  // Présentation des masses dans l'ordre croissant des positions.
+  // Exemple : 5-6, 13-14, 20-21, 68-69.
+  const sortedPlacements = [...bestPlacements].sort((a, b) => {
+    if (a.p1 !== b.p1) return a.p1 - b.p1;
+    return a.p2 - b.p2;
+  });
+
   return {
-    placements: bestPlacements,
+    placements: sortedPlacements,
     residual: bestResidual,
-    totalMass: bestPlacements.length * MASS
+    totalMass: sortedPlacements.length * MASS
   };
 }
 

@@ -59,3 +59,5 @@ Puis ouvrez `http://localhost:8000`.
 - `manifest.webmanifest`
 - `service-worker.js`
 - `icons/`
+
+- Les masses à placer sont affichées en **ordre croissant de position**.
