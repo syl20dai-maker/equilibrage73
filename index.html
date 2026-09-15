@@ -80,7 +80,15 @@
         <strong id="rResidual">—</strong>
       </div>
 
-      <h3>Masses à placer</h3>
+      <div class="result-choice">
+        <span>Afficher le résultat par</span>
+        <div class="segmented-control" role="group" aria-label="Type d’affichage du résultat">
+          <button id="showPositionsBtn" type="button" class="segment active">Positions</button>
+          <button id="showAnglesBtn" type="button" class="segment">Angles</button>
+        </div>
+      </div>
+
+      <h3 id="placementTitle">Masses à placer</h3>
       <div id="placementList" class="placement-list"></div>
     </section>
 

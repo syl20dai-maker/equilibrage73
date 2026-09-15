@@ -1,4 +1,4 @@
-const CACHE_NAME = "equilibrage73-v3-angle-sort";
+const CACHE_NAME = "equilibrage73-v4-result-display";
 const APP_SHELL = [
   "./",
   "./index.html",

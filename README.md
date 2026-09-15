@@ -61,3 +61,5 @@ Puis ouvrez `http://localhost:8000`.
 - `icons/`
 
 - Les masses à placer sont affichées en **ordre croissant de position**.
+
+- Résultat commutable entre **positions de pose** et **angles exacts de pose**.

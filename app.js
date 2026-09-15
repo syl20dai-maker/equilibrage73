@@ -24,6 +24,12 @@ const rCount = document.getElementById("rCount");
 const rTotal = document.getElementById("rTotal");
 const rResidual = document.getElementById("rResidual");
 const placementList = document.getElementById("placementList");
+const placementTitle = document.getElementById("placementTitle");
+const showPositionsBtn = document.getElementById("showPositionsBtn");
+const showAnglesBtn = document.getElementById("showAnglesBtn");
+
+let resultDisplayMode = "positions";
+let lastSolution = null;
 
 function normalize(angle) {
   const x = angle % 360;
@@ -196,21 +202,8 @@ function renderResult(solution, imbalanceMass) {
   rTotal.textContent = `${fmt(solution.totalMass)} g`;
   rResidual.textContent = `${fmt(solution.residual)} g`;
 
-  placementList.innerHTML = "";
-
-  solution.placements.forEach((p, index) => {
-    const row = document.createElement("div");
-    row.className = "placement";
-    row.innerHTML = `
-      <span class="placement-index">${index + 1}</span>
-      <span class="placement-text">
-        <strong>Entre P${p.p1} et P${p.p2}</strong>
-        <small>Angle milieu : ${fmt(p.angle)}°</small>
-      </span>
-      <span class="placement-mass">1,2 g</span>
-    `;
-    placementList.appendChild(row);
-  });
+  lastSolution = solution;
+  renderPlacements(solution);
 
   resultCard.classList.remove("hidden");
   diagramCard.classList.remove("hidden");
@@ -256,6 +249,61 @@ function drawArrow(ctx, cx, cy, radius, angle, color, width) {
   ctx.fill();
   ctx.restore();
 }
+
+function renderPlacements(solution) {
+  placementList.innerHTML = "";
+
+  // Sécurité supplémentaire : toujours trier par position croissante.
+  const sorted = [...solution.placements].sort((a, b) => {
+    if (a.p1 !== b.p1) return a.p1 - b.p1;
+    return a.p2 - b.p2;
+  });
+
+  const angleMode = resultDisplayMode === "angles";
+  placementTitle.textContent = angleMode
+    ? "Angles des masses à placer"
+    : "Masses à placer";
+
+  sorted.forEach((p, index) => {
+    const row = document.createElement("div");
+    row.className = "placement";
+
+    if (angleMode) {
+      row.innerHTML = `
+        <span class="placement-index">${index + 1}</span>
+        <span class="placement-text">
+          <strong class="angle-value">${fmt(p.angle)}°</strong>
+          <small>Correspond à l’intervalle ${p.name}</small>
+        </span>
+        <span class="placement-mass">1,2 g</span>
+      `;
+    } else {
+      row.innerHTML = `
+        <span class="placement-index">${index + 1}</span>
+        <span class="placement-text">
+          <strong>Entre P${p.p1} et P${p.p2}</strong>
+          <small>Angle milieu : ${fmt(p.angle)}°</small>
+        </span>
+        <span class="placement-mass">1,2 g</span>
+      `;
+    }
+
+    placementList.appendChild(row);
+  });
+}
+
+function setResultDisplayMode(mode) {
+  resultDisplayMode = mode;
+  showPositionsBtn.classList.toggle("active", mode === "positions");
+  showAnglesBtn.classList.toggle("active", mode === "angles");
+
+  if (lastSolution) {
+    renderPlacements(lastSolution);
+  }
+}
+
+showPositionsBtn.addEventListener("click", () => setResultDisplayMode("positions"));
+showAnglesBtn.addEventListener("click", () => setResultDisplayMode("angles"));
 
 function drawDiagram(solution, imbalanceMass) {
   const canvas = document.getElementById("diagram");
