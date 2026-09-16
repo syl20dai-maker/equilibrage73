@@ -1,4 +1,4 @@
-const CACHE_NAME = "equilibrage73-v4-result-display";
+const CACHE_NAME = "equilibrage73-v5-simple-mass-dots";
 const APP_SHELL = [
   "./",
   "./index.html",
