@@ -412,17 +412,9 @@ function drawDiagram(solution, imbalanceMass) {
   ctx.font = "800 18px -apple-system, BlinkMacSystemFont, sans-serif";
   ctx.fillText("CORRECTION", p.x, p.y);
 
-  // Correction masses
-  solution.placements.forEach((placement, index) => {
+  // Correction masses : un simple point indique chaque masse placée.
+  solution.placements.forEach(placement => {
     const mp = polar(cx, cy, radius, placement.angle);
-    const lp = polar(cx, cy, radius + 72 + (index % 2) * 30, placement.angle);
-
-    ctx.strokeStyle = "rgba(23,100,154,.45)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(mp.x, mp.y);
-    ctx.lineTo(lp.x, lp.y);
-    ctx.stroke();
 
     ctx.fillStyle = "#17649a";
     ctx.strokeStyle = "#ffffff";
@@ -431,19 +423,6 @@ function drawDiagram(solution, imbalanceMass) {
     ctx.arc(mp.x, mp.y, 15, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-
-    const boxW = 118, boxH = 54;
-    ctx.fillStyle = "#17649a";
-    roundRect(ctx, lp.x - boxW/2, lp.y - boxH/2, boxW, boxH, 10);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = "800 15px -apple-system, BlinkMacSystemFont, sans-serif";
-    ctx.fillText(placement.name, lp.x, lp.y - 10);
-    ctx.font = "700 14px -apple-system, BlinkMacSystemFont, sans-serif";
-    ctx.fillText("1,2 g", lp.x, lp.y + 11);
   });
 
   // Center
